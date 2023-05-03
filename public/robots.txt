@@ -1,0 +1,135 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+
+
+
+
+import React, { useState, useRef, useEffect } from "react";
+import "./chat.css";
+ import ChatSidebar from "./ChatSidebar.js";
+ import Search from "./Search.js";
+ import ChatHeader from "./Header";
+
+function ChatUI() {
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [isFirstUser, setIsFirstUser] = useState(true);
+  const [editedMessage, setEditedMessage] = useState("");
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const messagesEndRef = useRef(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (newMessage.trim()) {
+      const message = {
+        content: newMessage.trim(),
+        sender: isFirstUser ? "user1" : "user2",
+      };
+      setMessages([...messages, message]);
+    }
+    setNewMessage("");
+  };
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+
+  const handleEditMessage = (message) => {
+    setSelectedMessage(message);
+    setEditedMessage(message.content);
+  };
+
+  const handleDeleteMessage = (message) => {
+    const filteredMessages = messages.filter(
+      (msg) => msg.content !== message.content
+    );
+    setMessages(filteredMessages);
+  };
+
+
+
+  return (
+  //   <div  className="grid-container ">
+  //  <ChatHeader/>
+     
+      
+      
+      
+     
+
+  //     <div className="chatGrid-UI">
+  //       <div className="UI">
+  //         <div class="chat-container">
+          
+  //           <ul className="text">
+  //             {messages.map((message, index) => (
+  //               <div key={index} className="message-container">
+  //                 {message.sender === "user1" ? (
+  //                   <div className="message-left">
+  //                     <div className="box">{message.content}</div>
+  //                   </div>
+  //                 ) : (
+
+
+
+  <div className="grid-container ">
+  <ChatHeader />
+
+  <div className="chatGrid-UI">
+    <div className="UI">
+      <div class="chat-container">
+        <ul className="text">
+          {messages.map((message, index) => (
+            <div key={index} className="message-container">
+              {message.sender === "user1" ? (
+                <div className="message-left">
+                  <div className="box">{message.content}</div>
+                  <div className="message-actions">
+                    <button onClick={() => handleEditMessage(message)}>
+                      Edit
+                    </button>
+                    <button onClick={() => handleDeleteMessage(message)}>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                ) : (
+
+                    <div className="message-right">
+                      <div className="box">{message.content}</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </ul>
+          </div>
+          <div className="container-form">
+            <div className="form">
+              <form onSubmit={handleSubmit} className="form-container">
+                <div className="form-childOne">
+                  <input
+                    type="text"
+                    className="input-section"
+                    value={newMessage}
+                    onChange={(event) => setNewMessage(event.target.value)}
+                  />
+                </div>
+
+                <div className="form-childtwo">
+                  <div className="switch">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={isFirstUser}
+                        onChange={() => setIsFirstUser(!isFirstUser)}
+                      />
+                      <span class="slider round"></span>
+                      <br></br>
+                      <br></br>
+                      {/* {isFirstUser ? "user1" : "user2"} */}
+                    </label>
+                  </div>
+                </div>
