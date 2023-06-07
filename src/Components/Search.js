@@ -4,8 +4,8 @@ function Search() {
   return (
     <div>
       <div className="search">
-        <div class="form-outline">
-          <input type="search" id="form1" class="form-control" placeholder="Peaople,Groups,Messeges "
+        <div className="form-outline">
+          <input type="search" id="form1" className="form-control" placeholder="Peaople,Groups,Messeges "
           
           />
           {/* <label class="bi bi-search" for="form1"> */}

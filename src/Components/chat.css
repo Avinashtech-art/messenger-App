@@ -274,7 +274,9 @@ input:checked + .slider:before {
   ;
 }
 
-
+.colour{
+  background-color: #010305;
+}
 
 
 

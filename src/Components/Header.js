@@ -1,15 +1,15 @@
 import React from "react";
 
-function ChatHeader() {
+function ChatHeader({ selectedMessage }) {
+
+
+
+
   return (
     <div className="chatGrid-Head">
       <div className="chatInfo">
-      <h2>Name </h2>
-      <div className="headerIcon">
-      <i class="fa-solid fa-phone"></i>
-      <i class="fa-solid fa-phone"></i>
-      <i class="fa-solid fa-phone"></i>
-      </div>
+      <h1>{selectedMessage}</h1>
+      
       </div>
     
     </div>
@@ -17,3 +17,4 @@ function ChatHeader() {
 }
 
 export default ChatHeader;
+
