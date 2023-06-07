@@ -14,7 +14,7 @@ function App() {
   if (isAuthorized) {
     // User is already authorized or user data is present in local storage, show the home page
     return (
-      <BrowserRouter>
+      <BrowserRouter>dfasdf
         <Routes>
           <Route
             path="/home"
