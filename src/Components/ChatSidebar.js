@@ -31,7 +31,7 @@ function ChatSidebar() {
           {message.text}
         </div>
       ))}
-   <ChatHeader selectedMessage={selectedMessage} messages={messages} /> {/* pass selectedMessage and messages as props */}   
+   {/* <ChatHeader selectedMessage={selectedMessage} messages={messages} /> {/* pass selectedMessage and messages as props */}    
     </div>
   );
 }

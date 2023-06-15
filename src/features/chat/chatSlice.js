@@ -48,9 +48,9 @@ export const chatSlice = createSlice({
     currentUser: "",
     messages: [
       { id: 1, content: "Hi", sender: "user1" },
-      { id: 2, content: "Hi", sender: "user2" },
-      { id: 3, content: "Hi", sender: "user3" },
-      { id: 4, content: "Hi", sender: "user4" },
+      { id: 2, content: "Heloooo", sender: "user2" },
+      { id: 3, content: "How are you", sender: "user3" },
+      { id: 4, content: "Heyy.... man", sender: "user4" },
     ],
   },
   reducers: {
@@ -69,10 +69,13 @@ export const chatSlice = createSlice({
         message.content = content;
       }
     },
+
     deleteMessage: (state, action) => {
       const id = action.payload;
       state.messages = state.messages.filter((message) => message.id !== id);
-    },
+      debugger;
+    },  
+
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
     },

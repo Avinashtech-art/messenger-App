@@ -1013,9 +1013,6 @@ export default Popup;
 // };
 
 // export default Popup;
-
-
-
 ............................................................................................................................................
 
 
@@ -1388,7 +1385,6 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default ProtectedRoute;
-
 
 
 

@@ -7,9 +7,11 @@ export const useAuth = () => {
   const userList = useSelector((state) => state.users.userList); // check in redux userlist
   const isUserAuthorized = userList.find(
     (item) => item === localStorage.getItem("user") //check user match with userlist
-  );
+  );  
+
   useEffect(() => {
     dipatch(authenticate(isUserAuthorized));
+    
   });
   return { isUserAuthorized };
 };

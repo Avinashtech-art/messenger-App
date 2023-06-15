@@ -12,11 +12,11 @@ const userSlice = createSlice({
   initialState,
 
   reducers: {
-    setShow: (state, action) => {
-      state.show = action.payload;
-    },
     resetName: (state, action) => {
       state.userName = action.payload;
+    },
+    setShow: (state, action) => {
+      state.show = action.payload;
     },
     setName: (state, action) => {
       state.name = action.payload;
@@ -24,19 +24,18 @@ const userSlice = createSlice({
     listName: (state) => {
       state.userList = initialState.userList;
     },
-    authenticate(state, action) {
+    authenticate: (state, action) => {
       state.isUserAuthorized = action.payload;
     },
- 
   },
 });
-export const {  
+export const {
   setShow,
-  resetName,
   listName,
   setName,
   setIsFetching,
-  authenticate
+  authenticate,
+  resetName,
 } = userSlice.actions;
 
 export default userSlice.reducer;

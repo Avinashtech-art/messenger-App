@@ -231,10 +231,22 @@
 //       <ChatSidebar />
 //     </div>
 //   );
-// }
+// }y
 
 // export default ChatUI;
 
+/**
+ * material UI Imports
+ */
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+
+// -----------------------------
+
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import React, { useState, useRef, useEffect } from "react";
 import "./chat.css";
 import ChatSidebar from "./ChatSidebar.js";
@@ -259,8 +271,15 @@ export function ChatUI() {
   const messagesEndRef = useRef(null);
 
   const loggedInUser = localStorage.getItem("user");
-  const users = ["user1", "user2", "user3", "user4"];
+  // const users = ["user1", "user2", "user3", "user4"];
 
+  //dropdown...............................................
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+  ///....................................................
   const chat = useSelector((state) => state.chats);
   const dispatch = useDispatch();
 
@@ -284,8 +303,11 @@ export function ChatUI() {
   };
 
   const handleDelete = (id) => {
+    debugger;
     dispatch(deleteMessage(id));
+    handleClose();
   };
+
   const navigate = useNavigate();
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -302,7 +324,21 @@ export function ChatUI() {
     setSelectedUser(selectedUser);
   };
 
+  // Material UI
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const ITEM_HEIGHT = 35;
+  // ......................................................
+
   return (
+    <div className="full-body">
     <div className="grid-container">
       <ChatHeader />
 
@@ -316,61 +352,79 @@ export function ChatUI() {
                   ? "message-right"
                   : "message-left";
 
+                const isUser = message.sender === loggedInUser;
+
+                const userClass = isUser ? "user-right" : "user-left";
+
                 return (
-                  <div key={message.id} className="message-container">
-                    <div className={messageClass}>
-                      <div className="box">
-                        {editingMessageId === message.id ? (
-                          <>
-                            <input
-                              type="text"
-                              value={editingMessageContent}
-                              onChange={(e) =>
-                                setEditingMessageContent(e.target.value)
-                              }
-                            />
-                            <button
-                              onClick={() =>
-                                handleSaveEdit(
-                                  editingMessageId,
-                                  editingMessageContent
-                                )
-                              }
-                            >
-                              Save
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <div className="message-name">{message.sender}</div>
-                            <div className="message-content">
-                              {message.content}
-                            </div>
-                          </>
-                        )}
+                  <div className={userClass}>
+                    <div className={userClass}>{message.sender}</div>
+                    <div key={message.id} className="message-container">
+                      <div className={messageClass}>
+                        <div className="box">
+                          {editingMessageId === message.id ? (
+                            <>
+                              <input
+                                type="text"
+                                value={editingMessageContent}
+                                onChange={(e) =>
+                                  setEditingMessageContent(e.target.value)
+                                }
+                              />
+                              <button
+                                type="submit"
+                                onClick={() =>
+                                  handleSaveEdit(
+                                    editingMessageId,
+                                    editingMessageContent
+                                  )
+                                }
+                              >
+                                Save
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <div className="message-content">
+                                {message.content}
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
-                      <div className="buttons">
-                        {editingMessageId !== message.id && (
-                          <li>
-                            <button
+
+                      <div>
+                      <DropdownButton
+                          style={{outline:'none'}}
+                          variant=" "
+                          title=":"
+                          className="toggle"
+                          cssClass='e-caret-hide'
+                        >
+                          {editingMessageId !== message.id && (
+                            <Dropdown.Item
+                            cssClass='e-caret-hide'
+                            
                               onClick={() =>
                                 handleEdit(message.id, message.content)
                               }
                             >
                               Edit
-                            </button>
-                          </li>
-                        )}
-                        <li>
-                          <button onClick={() => handleDelete(message.id)}>
+                            </Dropdown.Item>
+                          )}
+                          <Dropdown.Item
+                            onClick={() => handleDelete(message.id)}
+                          >
                             Delete
-                          </button>
-                        </li>
+                            {console.log("message id", message.id)}
+                          </Dropdown.Item>
+                        </DropdownButton>
                       </div>
                     </div>
                   </div>
                 );
               })}
+
               <div ref={messagesEndRef} />
             </ul>
           </div>
@@ -385,24 +439,6 @@ export function ChatUI() {
                     value={newMessage}
                     onChange={(event) => setNewMessage(event.target.value)}
                   />
-                </div>
-
-                <div className="form-childtwo">
-                  <div className="switch">
-                    <label>
-                      <select
-                        value={selectedUser}
-                        onChange={handleUserChange}
-                        className="user-select"
-                      >
-                        {users.map((user) => (
-                          <option key={user} value={user}>
-                            {user}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  </div>
                 </div>
 
                 <div className="form-childthree">
@@ -426,8 +462,9 @@ export function ChatUI() {
         </div>
       </div>
 
-      <Search />
-      <ChatSidebar />
+      {/* <Search /> */}
+      {/* <ChatSidebar /> */}
+    </div>
     </div>
   );
 }
