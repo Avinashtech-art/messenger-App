@@ -238,20 +238,13 @@
 /**
  * material UI Imports
  */
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-// -----------------------------
 
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React, { useState, useRef, useEffect } from "react";
-import "./chat.css";
-import ChatSidebar from "./ChatSidebar.js";
-import Search from "./Search.js";
-import ChatHeader from "./Header";
+import "./chatStyled.js";
+import { Col, Row } from 'antd';
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -260,6 +253,17 @@ import {
   editMessage,
 } from "../features/chat/chatSlice";
 import { authenticate } from "../features/chat/userSlice";
+
+import {
+  InputSection,
+  SendBtn,
+  UL,
+  FormContainer,
+  UserName,
+  UserMsg,
+  Input,
+  UI,
+} from "./chatStyled";
 
 export function ChatUI() {
   console.log("inside home");
@@ -303,49 +307,24 @@ export function ChatUI() {
   };
 
   const handleDelete = (id) => {
-    debugger;
     dispatch(deleteMessage(id));
-    handleClose();
+    // handleClose();
   };
 
-  const navigate = useNavigate();
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat.messages]);
 
-  const handleLogout = () => {
-    dispatch(authenticate());
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
-
-  const handleUserChange = (event) => {
-    const selectedUser = event.target.value;
-    setSelectedUser(selectedUser);
-  };
-
-  // Material UI
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const ITEM_HEIGHT = 35;
-  // ......................................................
-
   return (
-    <div className="full-body">
-    <div className="grid-container">
-      <ChatHeader />
 
-      <div className="chatGrid-UI">
-        <div className="UI">
-          <div className="chat-container">
-            <ul className="text">
+
+    <Row>
+    <Col span={2}></Col>
+    <Col span={20}> <UI>
+      <div className="UI">
+     
+          
+            <UL className="text">
               {chat.messages.map((message) => {
                 const isUserSender = message.sender === loggedInUser;
                 const messageClass = isUserSender
@@ -358,9 +337,12 @@ export function ChatUI() {
 
                 return (
                   <div className={userClass}>
-                    <div className={userClass}>{message.sender}</div>
+                    <UserName isUser={isUser} className={userClass}>
+                      <p>{message.sender}</p>
+                    </UserName>
+
                     <div key={message.id} className="message-container">
-                      <div className={messageClass}>
+                      <UserMsg isUserSender={isUser} className={messageClass}>
                         <div className="box">
                           {editingMessageId === message.id ? (
                             <>
@@ -391,20 +373,19 @@ export function ChatUI() {
                             </>
                           )}
                         </div>
-                      </div>
+                      </UserMsg>
 
                       <div>
-                      <DropdownButton
-                          style={{outline:'none'}}
+                        <DropdownButton
+                          style={{ outline: "none" }}
                           variant=" "
                           title=":"
                           className="toggle"
-                          cssClass='e-caret-hide'
+                          cssClass="e-caret-hide"
                         >
                           {editingMessageId !== message.id && (
                             <Dropdown.Item
-                            cssClass='e-caret-hide'
-                            
+                              cssClass="e-caret-hide"
                               onClick={() =>
                                 handleEdit(message.id, message.content)
                               }
@@ -426,46 +407,50 @@ export function ChatUI() {
               })}
 
               <div ref={messagesEndRef} />
-            </ul>
-          </div>
-
-          <div className="container-form">
-            <div className="form">
-              <form onSubmit={handleSubmit} className="form-container">
-                <div className="form-childOne">
-                  <input
-                    type="text"
-                    className="input-section"
-                    value={newMessage}
-                    onChange={(event) => setNewMessage(event.target.value)}
-                  />
-                </div>
-
-                <div className="form-childthree">
-                  <button type="submit">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      className="bi bi-send-fill"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
-                    </svg>
-                  </button>
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+            </UL>
+          
+       
       </div>
 
-      {/* <Search /> */}
-      {/* <ChatSidebar /> */}
-    </div>
-    </div>
+      {/* footer */}
+
+      <FormContainer>
+     
+        <Input>
+          <div className="Input">
+            <form onSubmit={handleSubmit}>
+              <InputSection
+                type="text"
+                className="input-section"
+                value={newMessage}
+                onChange={(event) => setNewMessage(event.target.value)}
+              />
+            </form>
+          </div>
+          </Input>
+          <div className="SendBtn">
+            <SendBtn type="submit">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className="bi bi-send-fill"
+                viewBox="0 0 16 16"
+              >
+                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
+              </svg>
+            </SendBtn>
+          </div>
+         
+      
+      </FormContainer>
+      </UI></Col>
+    
+    <Col span={2}></Col>
+  </Row>
+
+   
   );
 }
 

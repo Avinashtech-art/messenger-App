@@ -73,7 +73,6 @@ export const chatSlice = createSlice({
     deleteMessage: (state, action) => {
       const id = action.payload;
       state.messages = state.messages.filter((message) => message.id !== id);
-      debugger;
     },  
 
     setCurrentUser: (state, action) => {

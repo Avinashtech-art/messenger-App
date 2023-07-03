@@ -1389,3 +1389,259 @@ export default ProtectedRoute;
 
 
 
+import styled from 'styled-components';
+
+
+// h1
+const Heading = styled.h1`
+  text-align: left;
+  color: rgb(49, 127, 230);
+  padding-left: 50px;
+`;
+
+// .full-body
+const FullBody = styled.div`
+  padding: auto;
+  height: 100%;
+`;
+
+// .UI
+const UI = styled.div`
+  padding: 18px;
+`;
+
+// .input-section
+const InputSection = styled.input`
+  width: 700px;
+  border-radius: 15px 0px 0px 10px;
+  height: 40px;
+  outline: none;
+  text-decoration: none;
+`;
+
+// button
+const Button = styled.button`
+  border: none;
+  height: 39px;
+  background-color: #135faf;
+  color: rgb(15, 15, 15);
+  border-radius: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 4px;
+`;
+
+// .text
+const Text = styled.p`
+  color: rgb(31, 32, 32);
+  word-wrap: break-word;
+  margin: 5px;
+  margin: 0;
+  padding: 5px;
+`;
+
+// ul
+const List = styled.ul`
+  height: 618px;
+  overflow-y: scroll;
+`;
+
+// .message-left
+const MessageLeft = styled.div`
+  border-radius: 0 10px 10px 10px;
+  background: linear-gradient(
+    90deg,
+    rgb(34, 162, 231) 100%,
+    rgb(34, 162, 231) 100%,
+    rgb(34, 162, 231) 100%,
+    rgb(34, 162, 231) 100%
+  );
+  padding: 10px;
+  width: min-content;
+  color: #0c0b0b;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 5px 2px;
+  overflow: hidden;
+  max-width: 290px;
+  inline-size: max-content;
+`;
+
+// .message-right
+const MessageRight = styled.div`
+  border-radius: 10px 10px 0 10px;
+  background: rgb(255, 250, 250);
+  width: min-content;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px 2px;
+  padding: 10px;
+  margin-left: auto;
+  overflow: hidden;
+  max-width: 290px;
+  inline-size: max-content;
+`;
+
+// .message-container
+const MessageContainer = styled.div`
+  padding: 0px;
+  margin-bottom: 10px;
+  max-width: 100%;
+  word-wrap: break-word;
+  display: flex;
+`;
+
+// .form-container
+const FormContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+
+// .switch input + .slider:before
+const SwitchInput = styled.span`
+  content: 'U1';
+`;
+
+// .chatGrid-Head
+const ChatGridHead = styled.div`
+  border-bottom: 0.5px solid #bfc1c4;
+  background-color: white;
+  grid-area: header;
+`;
+
+// .Chat-left
+const ChatLeft = styled.div`
+  grid-area: menu;
+`;
+
+// .chatGrid-UI
+const ChatGridUI = styled.div`
+  grid-area: main;
+`;
+
+// .sidebar
+const Sidebar = styled.div`
+  grid-area: right;
+  border-left: 0.5px solid #bfc1c4;
+  border-right: 0.5px solid #bfc1c4;
+`;
+
+// .container-form
+const ContainerForm = styled.div`
+  grid-area: footer;
+`;
+
+// .head1
+const Head1 = styled.div`
+  grid-area: head;
+`;
+
+// .grid-container
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-areas:
+    "header header header header header header"
+    "right right right main main ."
+    "right right right main main .";
+`;
+
+// .list-group
+const ListGroup = styled.div`
+  height: 670px;
+`;
+
+// .list-group-item
+const ListItem = styled.div`
+  background-color: hwb(300 78% 19%);
+  border: none;
+  text-decoration: wheat;
+`;
+
+// .colour
+const Colour = styled.div`
+  background-color: #010305;
+`;
+
+// .user-right
+const UserRight = styled.div`
+  max-width: 290px;
+  inline-size: max-content;
+  margin-left: auto;
+  font-size: medium;
+  margin-right: 34px;
+  color: #504f4f;
+`;
+
+// .user-left
+const UserLeft = styled.div`
+  inline-size: max-content;
+  font-size: medium;
+  color: #504f4f;
+`;
+
+// .VertIcon
+const VertIcon = styled.div`
+  color: rgb(190, 185, 185);
+`;
+
+// .toggle button
+const ToggleButton = styled.button`
+  border: none !important;
+`;
+
+// .dropdown-toggle::after
+const DropdownToggle = styled.div`
+  display: none !important;
+  border: none !important;
+`;
+
+// .toggle button
+const ToggleButton2 = styled.button`
+  color: #dce3eb;
+`;
+
+// .e-caret-hide::after
+const ECaretHide = styled.div`
+  display: none;
+`;
+
+// .navbar
+const Navbar = styled.div`
+  text-align: center;
+`;
+
+// input
+const Input = styled.input`
+  border-radius: 5px;
+  min-width: 65%;
+  padding: 5px;
+  border: none;
+  background-color: #b4b9c0fd;
+`;
+
+// .chatHead
+const ChatHead = styled.div`
+  display: flex;
+`;
+
+// .togglebox
+const ToggleBox = styled.div`
+  margin-inline-start: auto;
+`;
+
+// Usage example
+const MyComponent = () => {
+  return (
+    <FullBody>
+      <UI>
+        <InputSection type="text" placeholder="Enter text" />
+        <Button>Submit</Button>
+        <Text>Hello, World!</Text>
+        <List>
+          <MessageContainer>
+            <MessageLeft>Left message</MessageLeft>
+            <MessageRight>Right message</MessageRight>
+          </MessageContainer>
+        </List>
+      </UI>
+    </FullBody>
+  );
+};
+
