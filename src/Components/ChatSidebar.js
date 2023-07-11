@@ -4,14 +4,14 @@
 
 import React from "react";
 // import { useState } from "react";
-// import ChatHeader from "./Header";
+import './chat.css'
 import { SideBar } from "./chatStyled";
 function ChatSidebar() {
  
 
   return (
     
-    <div className="sidebar">
+    <div className="sidebar" >
       {/* {messages.map((message) => (
         <div
           key={message.id}

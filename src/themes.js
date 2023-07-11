@@ -18,39 +18,25 @@ const theme = {
 }
 
 export const lightTheme = {
-  bg: '#fff',
-  primary: '#ff0072',
-  chattheme:"blue",
+  bg: '#DDE6ED',
+  Primary:"#526D82" ,
+  Secondary:'#f0eff3',
   fontColor: '#1c1c1c',
-  // messageContent:"blue",
+  inputColor:'#9DB2BF',
+  LogOutBtn:'#aaa'
 
-  nodeBg: '#f2f2f5',
-  nodeColor: '#222',
-  nodeBorder: '#222',
 
-  minimapMaskBg: '#f2f2f5',
 
-  controlsBg: '#fefefe',
-  controlsBgHover: '#eee',
-  controlsColor: '#222',
-  controlsBorder: '#ddd',
 };
 
 export const darkTheme = {
-  bg: '#1c1c1c',
-  primary: '#ff0072',
-  chattheme:"red",
+  bg: '#041C32',
+  Primary:"#022C43",
+  Secondary:'#19376D',
   fontColor: '#fff',
-  nodeBg: '#343435',
-  nodeColor: '#f9f9f9',
-  nodeBorder: '#888',
-
-  minimapMaskBg: '#343435',
-
-  controlsBg: '#555',
-  controlsBgHover: '#676768',
-  controlsColor: '#dddddd',
-  controlsBorder: '#676768',
+  inputColor:' #27374D ',
+  LogOutBtn:'#7FDBFF'
+ 
 };
 
 

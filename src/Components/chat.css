@@ -13,7 +13,16 @@
 .UI {
   padding: 18px;
 } */
+.sidebar{
+  text-align: center;
+}
+.theme{
+  padding-left: 2px;
+}
 
+.chatHead{
+  animation-direction: alternate-reverse;
+}
 /* .input-section {
   width: 700px;
   border-radius: 15px 0px 0px 10px;

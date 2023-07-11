@@ -243,16 +243,16 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import React, { useState, useRef, useEffect } from "react";
 import "./chatStyled.js";
-import { Col, Row } from 'antd';
+import { Col, Row } from "antd";
 
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   addMessage,
   deleteMessage,
   editMessage,
 } from "../features/chat/chatSlice";
-import { authenticate } from "../features/chat/userSlice";
+
 
 import {
   InputSection,
@@ -316,14 +316,12 @@ export function ChatUI() {
   }, [chat.messages]);
 
   return (
-
-
-    <Row>
-    <Col span={2}></Col>
-    <Col span={20}> <UI>
-      <div className="UI">
-     
-          
+    <Row style = {{ borderRadius: "20px"}}>
+       
+      <Col span={2}></Col>
+      <Col span={20}>
+        <UI >
+          <div className="UI">
             <UL className="text">
               {chat.messages.map((message) => {
                 const isUserSender = message.sender === loggedInUser;
@@ -408,49 +406,53 @@ export function ChatUI() {
 
               <div ref={messagesEndRef} />
             </UL>
-          
-       
-      </div>
-
-      {/* footer */}
-
-      <FormContainer>
-     
-        <Input>
-          <div className="Input">
-            <form onSubmit={handleSubmit}>
-              <InputSection
-                type="text"
-                className="input-section"
-                value={newMessage}
-                onChange={(event) => setNewMessage(event.target.value)}
-              />
-            </form>
           </div>
-          </Input>
-          <div className="SendBtn">
-            <SendBtn type="submit">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-send-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
-              </svg>
-            </SendBtn>
-          </div>
-         
-      
-      </FormContainer>
-      </UI></Col>
+
+          {/* footer */}
+          <Row align="middle">
+          <Col md={4}></Col>
+          <Col md={16}>
+
+          <FormContainer>
+            <Input>
+              <div className="Input">
+                <form onSubmit={handleSubmit}>
+                  <InputSection
+                    type="text"
+                    className="input-section"
+                    value={newMessage}
+                    onChange={(event) => setNewMessage(event.target.value)}
+                  />
+                </form>
+              </div>
+            </Input>
+            <div className="SendBtn">
+              <SendBtn type="submit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-send-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
+                </svg>
+              </SendBtn>
+            </div>
+          </FormContainer>
+          </Col>
+          <Col md={4}></Col>
+          </Row>
+        </UI>
+      </Col>
     
-    <Col span={2}></Col>
-  </Row>
+    
 
-   
+
+
+      <Col span={2}></Col>
+    </Row>
   );
 }
 
