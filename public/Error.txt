@@ -59,7 +59,7 @@ export function ChatUI() {
   };
 
   const handleDelete = (id) => {
-    debugger;
+  
     dispatch(deleteMessage(id));
     handleClose();
   };
@@ -95,7 +95,7 @@ export function ChatUI() {
 
 
   const onDelete = (item)=>{
-debugger;
+
   }
   const renderOptions = ({userClass , dagta})=>{
     return <div className={userClass}>

@@ -1,17 +1,10 @@
-
-
-
-
 import React from "react";
 // import { useState } from "react";
-import './chat.css'
+import "./chat.css";
 import { SideBar } from "./chatStyled";
 function ChatSidebar() {
- 
-
   return (
-    
-    <div className="sidebar" >
+    <div className="sidebar">
       {/* {messages.map((message) => (
         <div
           key={message.id}
@@ -24,12 +17,9 @@ function ChatSidebar() {
         </div>
       ))}
    {/* <ChatHeader selectedMessage={selectedMessage} messages={messages} /> pass selectedMessage and messages as props     */}
-   <h1>SideBar</h1>
-  
+      <h1>SideBar</h1>
     </div>
- 
   );
 }
 
 export default ChatSidebar;
-

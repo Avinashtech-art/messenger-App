@@ -1,5 +1,7 @@
 import React from "react";
+
 import { ThemeProvider } from "styled-components";
+
 
 const theme = {
   colors: {
@@ -17,27 +19,51 @@ const theme = {
 
 }
 
-export const lightTheme = {
-  bg: '#DDE6ED',
-  Primary:"#526D82" ,
-  Secondary:'#f0eff3',
-  fontColor: '#1c1c1c',
-  inputColor:'#9DB2BF',
-  LogOutBtn:'#aaa'
 
-
-
+export const ThemeNameEnum = {
+  Primary: "primary",
+  Secondary: "secondary",
+  FontColor: "font",
 };
 
-export const darkTheme = {
-  bg: '#041C32',
-  Primary:"#022C43",
-  Secondary:'#19376D',
-  fontColor: '#fff',
-  inputColor:' #27374D ',
-  LogOutBtn:'#7FDBFF'
+export const ThemeMain = {
+  Dark : 'dark',
+  Light: 'light'
+}
+
+
+export const LightThemeDefault = {
+  [ThemeNameEnum.Primary]: "beige",
+  [ThemeNameEnum.Secondary]: "bisque",
+  [ThemeNameEnum.FontColor]: "burlywood",
+}
+
+export const DarkThemeDefault = {
+  [ThemeNameEnum.Primary]: "#041C32",
+  [ThemeNameEnum.Secondary]: "#19376D",
+  [ThemeNameEnum.FontColor]: "#fff",
+}
+
+
+// export const lightTheme = {
+//   bg: '#DDE6ED',
+//   Primary:"#526D82" ,
+//   Secondary:'#f0eff3',
+//   fontColor: '#1c1c1c',
+//   inputColor:'#9DB2BF',
+//   LogOutBtn:'#aaa'
+
+// };
+
+// export const darkTheme = {
+//   bg: '#041C32',
+//   Primary:"#022C43",
+//   Secondary:'#19376D',
+//   fontColor: '#fff',
+//   inputColor:' #27374D ',
+//   LogOutBtn:'#7FDBFF'
  
-};
+// };
 
 
 

@@ -3,20 +3,21 @@ import "../switch.css";
 import "./chat.css";
 import { useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Form, Input, Typography } from "antd";
-
+import { Form, Input } from "antd";
+import { updateValue } from "../features/chat/themeSlice";
 import { authenticate } from "../features/chat/userSlice";
 import { ChatHead, StyledButton } from "./chatStyled";
-import { Button, Modal } from "antd";
+import {  Modal, Tabs } from "antd";
+import { ThemeMain, ThemeNameEnum } from "../themes";
 
-function ChatHeader({ toggleTheme, isDarkTheme }) {
+function ChatHeader({ ToggleTheme, isDarkTheme }) {
   const [isToggled, setIsToggled] = useState(isDarkTheme);
 
   const onToggle = () => {
     setIsToggled(!isToggled);
-    toggleTheme();
+    ToggleTheme();
   };
 
   const ToggleBox = styled.div`
@@ -51,13 +52,79 @@ function ChatHeader({ toggleTheme, isDarkTheme }) {
     setOpen(false);
   };
 
+  const tempThemeValues = useSelector((state) => state.theme.tempThemeValues);
+  console.log("theme values", tempThemeValues);
+  const handleFormSubmit = () => {
+    dispatch(updateValue(tempThemeValues));
+  };
+  const updateTheme = (type, name, value) => {
+    dispatch(
+      updateValue({
+        type,
+        values: { [name]: value },
+      })
+    );
+  };
+
+  const formItem = ({ label, name, type }) => {
+    return (
+      <Form.Item
+        label={label}
+        name={name}
+        rules={[
+          {
+            required: true,
+            message: "Please input your theme!",
+          },
+        ]}
+      >
+        <Input
+          value={tempThemeValues[name]}
+          onChange={(e) => updateTheme(type, name, e.target.value)}
+        />
+      </Form.Item>
+    );
+  };
+
+  const getConfig = () => {
+    return {
+      light: [
+        { label: "Primary", name: ThemeNameEnum.Primary },
+        { label: "Secondary", name: ThemeNameEnum.Secondary },
+        { label: "Fontcolor", name: ThemeNameEnum.FontColor },
+      ],
+      dark: [
+        { label: "Dark Primary", name: ThemeNameEnum.Primary },
+        { label: "Secondary", name: ThemeNameEnum.Secondary },
+        { label: "Fontcolor", name: ThemeNameEnum.FontColor },
+      ],
+    };
+  };
+
+  const formWrapper = (type) => {
+    return (
+      <Form
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
+        style={{
+          maxWidth: 600,
+        }}
+        onFinish={handleFormSubmit}
+      >
+        {getConfig()[type].map((item) => {
+          return formItem({ ...item, type });
+        })}
+      </Form>
+    );
+  };
+
   return (
     <ChatHead>
-      {/* <marquee direction="right"> */}
       <div className="chatHead">
         <h1>ChatApp</h1>
       </div>
-      {/* </marquee>  */}
 
       <ToggleBox>
         <div className="togglebox">
@@ -75,63 +142,30 @@ function ChatHeader({ toggleTheme, isDarkTheme }) {
       {/* Theme modal button */}
 
       <div className="theme">
-        <Button type="primary" onClick={showModal}>
-          Themes
-        </Button>
+        <StyledButton onClick={showModal}>Themes</StyledButton>
         <Modal
-          title="Theme"
           open={open}
           onOk={handleOk}
           confirmLoading={confirmLoading}
           onCancel={handleCancel}
         >
-          <Form
-            name="basic"
-            labelCol={{
-              span: 8,
-            }}
-            style={{
-              maxWidth: 600,
-            }}
-          >
-            <Form.Item
-              label="Primary"
-              name="Primary"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your theme!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              label="Secondary"
-              name="Secondary"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your theme!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+          <p>
+            <b>Theme</b>{" "}
+          </p>
+          <Tabs defaultActiveKey="1">
+            <Tabs.TabPane tab="Light Theme" key="1">
+              <h2>Light theme</h2>
 
-            <Form.Item
-              label="Fontcolor"
-              name="Fontcolor"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your Fontcolor!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          </Form>
+              {formWrapper(ThemeMain.Light)}
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Dark Theme" key="2">
+              <h2>Dark theme</h2>
+              {formWrapper(ThemeMain.Dark)}
+            </Tabs.TabPane>
+            <p>
+              <b>DarkTheme</b>{" "}
+            </p>
+          </Tabs>
         </Modal>
       </div>
     </ChatHead>

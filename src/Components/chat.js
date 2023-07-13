@@ -266,7 +266,7 @@ import {
 } from "./chatStyled";
 
 export function ChatUI() {
-  console.log("inside home");
+  
   const [newMessage, setNewMessage] = useState("");
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [editingMessageContent, setEditingMessageContent] = useState("");
@@ -395,7 +395,7 @@ export function ChatUI() {
                             onClick={() => handleDelete(message.id)}
                           >
                             Delete
-                            {console.log("message id", message.id)}
+                            {/* {console.log("message id", message.id)} */}
                           </Dropdown.Item>
                         </DropdownButton>
                       </div>

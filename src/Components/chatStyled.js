@@ -1,14 +1,15 @@
 import "./chat.css";
 import styled, { css } from "styled-components";
 import { Button, Layout } from "antd";
-
+import {ThemeNameEnum} from '../themes'
 
 const { Header, Sider, Content } = Layout;
 
 export const ThemeVariable = css`
   margin: 0.5px;
-  background-color: ${(props) => `${props.theme.bg} !important`};
-  color: ${(props) => props.theme.fontColor};
+  background-color: ${(props) => `${props.theme[ThemeNameEnum.Primary]} !important`};
+  color: ${(props) => {
+   return props.theme[ThemeNameEnum.FontColor]}};
 `;
 
 export const CustomHeader = styled(Header)`
@@ -26,6 +27,8 @@ export const CustomContent = styled(Content)`
 export const CustomSider = styled(Sider)`
   ${ThemeVariable}
   border-radius:   1px 10px 10px  1px;
+  background-color: ${(props) => `${props.theme[ThemeNameEnum.Primary]} !important`};
+
 `;
 
 export const UI = styled.div``;
@@ -40,25 +43,26 @@ export const InputSection = styled.input`
   padding: 5px;
   border: none;
 
-  background-color: ${(props) => `${props.theme.inputColor} !important`};
+  background-color: ${(props) => `${props.theme[ThemeNameEnum.Secondary]} !important`};
 `;
 
 export const SendBtn = styled.button`
   border: none;
   height: 39px;
-  background-color: #135faf;
+  background-color: ${(props) => `${props.theme[ThemeNameEnum.Secondary]} !important`};
+
   color: rgb(15, 15, 15);
   border-radius: 16px;
   padding: 5px 10px;
   cursor: pointer;
-
   margin: 4px;
 `;
 
 export const StyledButton = styled(Button)`
   border: none;
 
-  background-color: ${(props) => `${props.theme.LogOutBtn} !important`};
+  background-color: ${(props) =>{
+    return `${props.theme.secondary} !important`}};
 `;
 
 export const UL = styled.ul`
@@ -121,7 +125,7 @@ export const UserMsg = styled.div`
             box-shadow: rgb(0 0 0 / 25%) 0px 2px 5px 2px;
             padding: 10px;
             background-color: ${(props) =>
-              `${props.theme.Primary} !important`};
+              `${props.theme.primary} !important`};
 
             margin-left: auto;
             overflow: hidden;
@@ -142,7 +146,7 @@ export const UserMsg = styled.div`
             );
             padding: 10px;
             width: min-content;
-            background-color: ${(props) => `${props.theme.Secondary} !important`};
+            background-color: ${(props) => `${props.theme.secondary} !important`};
 
             box-shadow: rgb(0 0 0 / 25%) 0px 5px 5px 2px;
             overflow: hidden;

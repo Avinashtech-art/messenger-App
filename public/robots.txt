@@ -1645,3 +1645,363 @@ const MyComponent = () => {
   );
 };
 
+
+
+
+
+
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateValue } from "../features/chat/userSlice";
+import { ChatHead, StyledButton } from "./chatStyled";
+import { Button, Modal, Form, Input } from "antd";
+
+function ChatHeader({ toggleButton, isDarkTheme }) {
+  const [isToggled, setIsToggled] = useState(isDarkTheme);
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const [primaryTheme, setPrimaryTheme] = useState("");
+  const [secondaryTheme, setSecondaryTheme] = useState("");
+  const [fontColor, setFontColor] = useState("");
+
+  const dispatch = useDispatch();
+
+  const onToggle = () => {
+    setIsToggled(!isToggled);
+    toggleButton();
+  };
+
+  const handleLogout = () => {
+    dispatch(authenticate());
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const handleFormSubmit = () => {
+    dispatch(
+      updateValue({
+        primaryTheme,
+        secondaryTheme,
+        fontColor,
+      })
+    );
+  };
+
+  return (
+    <ChatHead>
+      {/ Rest of the component code /}
+      <div className="theme">
+        <Button type="primary" onClick={showModal}>
+          Themes
+        </Button>
+        <Modal
+          title="Theme"
+          visible={open}
+          onOk={handleOk}
+          confirmLoading={confirmLoading}
+          onCancel={handleCancel}
+        >
+          <Form
+            name="themeForm"
+            labelCol={{ span: 8 }}
+            style={{ maxWidth: 600 }}
+            onFinish={handleFormSubmit}
+          >
+            <Form.Item
+              label="Primary"
+              name="primaryTheme"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your primary theme!",
+                },
+              ]}
+            >
+              <Input
+                value={primaryTheme}
+                onChange={(e) => setPrimaryTheme(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Secondary"
+              name="secondaryTheme"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your secondary theme!",
+                },
+              ]}
+            >
+              <Input
+                value={secondaryTheme}
+                onChange={(e) => setSecondaryTheme(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Font Color"
+              name="fontColor"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your font color!",
+                },
+              ]}
+            >
+              <Input
+                value={fontColor}
+                onChange={(e) => setFontColor(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 8 }}>
+              <Button type="primary" htmlType="submit">
+                Save
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
+    </ChatHead>
+  );
+}
+
+export default ChatHeader;
+
+
+
+
+
+
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  isDarkTheme: false,
+  primaryTheme: "",
+  secondaryTheme: "",
+  fontColor: "",
+};
+
+const chatHeaderSlice = createSlice({
+  name: "chatHeader",
+  initialState,
+  reducers: {
+    updateValue(state, action) {
+      const { primaryTheme, secondaryTheme, fontColor } = action.payload;
+      state.primaryTheme = primaryTheme;
+      state.secondaryTheme = secondaryTheme;
+      state.fontColor = fontColor;
+    },
+  },
+});
+
+export default chatHeaderSlice.reducer;
+
+
+
+
+
+
+
+
+
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button, Modal } from 'antd';
+import { ChatHead, StyledButton } from './chatStyled';
+import { authenticate } from '../features/chat/userSlice';
+import { toggleTheme, updateValue } from '../features/chat/themeSlice';
+import styled from 'styled-components';
+
+function ChatHeader({ isDarkTheme }) {
+  const [isToggled, setIsToggled] = useState(isDarkTheme);
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState('Content');
+  const [themeValues, setThemeValues] = useState({
+    primaryTheme: '',
+    secondaryTheme: '',
+    fontColor: '',
+  });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onToggle = () => {
+    setIsToggled(!isToggled);
+    dispatch(toggleTheme());
+  };
+
+  const handleLogout = () => {
+    dispatch(authenticate());
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = () => {
+    setModalText('The modal will be closed after two seconds');
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
+
+  const handleFormSubmit = () => {
+    dispatch(updateValue(themeValues));
+  };
+
+  const ToggleBox = styled.div`
+    margin-inline-start: auto;
+    pad
+  `;
+
+  return (
+    <ChatHead>
+      {/ <marquee direction="right"> /}
+      <div className="chatHead">
+        <h1>ChatApp</h1>
+      </div>
+      {/ </marquee> /}
+
+      <ToggleBox>
+        <div className="togglebox">
+          <label className="toggle-switch">
+            <input type="checkbox" checked={isToggled} onChange={onToggle} />
+            <span className="switch" />
+          </label>
+        </div>
+      </ToggleBox>
+
+      <div className="LogOutBtn">
+        <StyledButton onClick={handleLogout}>Logout</StyledButton>
+      </div>
+
+      {/ Theme modal button /}
+      <div className="theme">
+        <Button type="primary" onClick={showModal}>
+          Themes
+        </Button>
+        <Modal
+          title="Theme"
+          visible={open}
+          onOk={handleOk}
+          confirmLoading={confirmLoading}
+          onCancel={handleCancel}
+        >
+          <Form
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            style={{
+              maxWidth: 600,
+            }}
+            onFinish={handleFormSubmit}
+          >
+            <Form.Item
+              label="Primary"
+              name="Primary"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your theme!',
+                },
+              ]}
+            >
+              <Input
+                onChange={(e) =>
+                  setThemeValues((prevValues) => ({
+                    ...prevValues,
+                    primaryTheme: e.target.value,
+                  }))
+                }
+              />
+            </Form.Item>
+            <Form.Item
+              label="Secondary"
+              name="Secondary"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your theme!',
+                },
+              ]}
+            >
+              <Input
+                onChange={(e) =>
+                  setThemeValues((prevValues) => ({
+                    ...prevValues,
+                    secondaryTheme: e.target.value,
+                  }))
+                }
+              />
+            </Form.Item>
+            <Form.Item
+              label="Fontcolor"
+              name="Fontcolor"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your Fontcolor!',
+                },
+              ]}
+            >
+              <Input
+                onChange={(e) =>
+                  setThemeValues((prevValues) => ({
+                    ...prevValues,
+                    fontColor: e.target.value,
+                  }))
+                }
+              />
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
+    </ChatHead>
+  );
+}
+
+export default ChatHeader;
+
+
+
+
+
+updateValue: (state, action) => {
+      const { primaryTheme, secondaryTheme, fontColor } = action.payload;
+      state.themeValues = {
+        primaryTheme,
+        secondaryTheme,
+        fontColor,
+      };
+    },
+  
+
+  

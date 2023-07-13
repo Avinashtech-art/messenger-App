@@ -6,7 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
 
 export const Popup = () => {
-  console.log("inside popup");
+  
   const name = useSelector((state) => state.users.name);
   const userList = useSelector((state) => state.users.userList);
   const dispatch = useDispatch();
