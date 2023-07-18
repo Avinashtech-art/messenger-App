@@ -1,7 +1,7 @@
 import React from "react";
 import "../switch.css";
 import "./chat.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,11 +9,17 @@ import { Form, Input } from "antd";
 import { updateValue } from "../features/chat/themeSlice";
 import { authenticate } from "../features/chat/userSlice";
 import { ChatHead, StyledButton } from "./chatStyled";
-import {  Modal, Tabs } from "antd";
+import { Modal, Tabs, Alert, Button, Space } from "antd";
 import { ThemeMain, ThemeNameEnum } from "../themes";
 
 function ChatHeader({ ToggleTheme, isDarkTheme }) {
   const [isToggled, setIsToggled] = useState(isDarkTheme);
+
+  const [activeTab, setActiveTab] = useState("1");
+
+  const handleTabChange = (key) => {
+    setActiveTab(key);
+  };
 
   const onToggle = () => {
     setIsToggled(!isToggled);
@@ -32,41 +38,62 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
     localStorage.removeItem("user");
     navigate("/login");
   };
-
+  const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState("Content");
+
+  const [updateThemeLocally, setThemeLocally] = useState({});
+
+  const { type, name, value } = updateThemeLocally;
+
   const showModal = () => {
     setOpen(true);
   };
   const handleOk = () => {
-    setModalText("The modal will be closed after two seconds");
     setConfirmLoading(true);
     setTimeout(() => {
-      setOpen(false);
       setConfirmLoading(false);
-    }, 2000);
+
+      if (value) {
+        setOpen(false);
+      }
+
+      dispatch(
+        updateValue({
+          type,
+          values: { [name]: value },
+        })
+      );
+    }, 1000);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
 
   const tempThemeValues = useSelector((state) => state.theme.tempThemeValues);
-  console.log("theme values", tempThemeValues);
+
   const handleFormSubmit = () => {
     dispatch(updateValue(tempThemeValues));
   };
-  const updateTheme = (type, name, value) => {
-    dispatch(
-      updateValue({
-        type,
-        values: { [name]: value },
-      })
-    );
+
+  const handleButtonClick = () => {
+    setThemeLocally({});
+    console.log("tempThemeValues", form);
+
+    form.resetFields();
   };
 
+  const updateTheme = (type, name, value) => {
+    setThemeLocally({
+      type,
+      name,
+      value,
+    });
+  };
+  console.log("autopop", tempThemeValues.dark.primary);
+
   const formItem = ({ label, name, type }) => {
+    const themeType = activeTab === "1" ? ThemeMain.Light : ThemeMain.Dark;
     return (
       <Form.Item
         label={label}
@@ -79,12 +106,15 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
         ]}
       >
         <Input
-          value={tempThemeValues[name]}
+          value={tempThemeValues[themeType][name]}
+          defaultValue={tempThemeValues[themeType][name]}
           onChange={(e) => updateTheme(type, name, e.target.value)}
         />
       </Form.Item>
     );
   };
+
+  
 
   const getConfig = () => {
     return {
@@ -92,11 +122,13 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
         { label: "Primary", name: ThemeNameEnum.Primary },
         { label: "Secondary", name: ThemeNameEnum.Secondary },
         { label: "Fontcolor", name: ThemeNameEnum.FontColor },
+        { label: "Layouts", name: ThemeNameEnum.Layouts },
       ],
       dark: [
         { label: "Dark Primary", name: ThemeNameEnum.Primary },
         { label: "Secondary", name: ThemeNameEnum.Secondary },
         { label: "Fontcolor", name: ThemeNameEnum.FontColor },
+        { label: "Layouts", name: ThemeNameEnum.Layouts },
       ],
     };
   };
@@ -104,6 +136,7 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
   const formWrapper = (type) => {
     return (
       <Form
+        form={form}
         name="basic"
         labelCol={{
           span: 8,
@@ -116,6 +149,8 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
         {getConfig()[type].map((item) => {
           return formItem({ ...item, type });
         })}
+
+        <StyledButton onClick={handleButtonClick}>clear</StyledButton>
       </Form>
     );
   };
@@ -152,7 +187,11 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
           <p>
             <b>Theme</b>{" "}
           </p>
-          <Tabs defaultActiveKey="1">
+          <Tabs
+            defaultActiveKey="1"
+            activeKey={activeTab}
+            onChange={handleTabChange}
+          >
             <Tabs.TabPane tab="Light Theme" key="1">
               <h2>Light theme</h2>
 
@@ -162,9 +201,7 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
               <h2>Dark theme</h2>
               {formWrapper(ThemeMain.Dark)}
             </Tabs.TabPane>
-            <p>
-              <b>DarkTheme</b>{" "}
-            </p>
+            <p></p>
           </Tabs>
         </Modal>
       </div>

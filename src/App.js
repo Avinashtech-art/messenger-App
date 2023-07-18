@@ -8,10 +8,13 @@ import { useAuth } from "./utils/hooks";
 import Themes from "./themes";
 import { ThemeProvider } from "styled-components";
 import { useDispatch } from "react-redux";
-import { getOrginalTheme, toggleTheme } from "./features/chat/themeSlice";
+import {
+  getOrginalTheme,
+  toggleTheme,
+  updateValue,
+} from "./features/chat/themeSlice";
 
 import ChatHeader from "./Components/ChatHeader";
-import { darkTheme, lightTheme } from "./themes";
 import { Layout } from "antd";
 import {
   CustomContent,
@@ -19,7 +22,6 @@ import {
   CustomSider,
 } from "./Components/chatStyled";
 import ChatSidebar from "./Components/ChatSidebar";
-import { Container } from "react-bootstrap";
 
 function App() {
   useAuth();
@@ -29,6 +31,7 @@ function App() {
   const dispatch = useDispatch();
   const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
   const themeValues = useSelector(getOrginalTheme);
+ 
 
   const ToggleTheme = () => {
     dispatch(toggleTheme());
@@ -49,12 +52,12 @@ function App() {
                     : { isDark: false, ...themeValues.light }
                 }
               >
-                <Layout style={{background:themeValues.dark.font}}>
+                <Layout style={{ background: themeValues.dark.font }}>
                   <CustomSider>
                     <ChatSidebar />
                   </CustomSider>
 
-                  <Layout style={{background:themeValues.dark.font}}>
+                  <Layout style={{ background: themeValues.dark.font }}>
                     <CustomHeader>
                       <ChatHeader
                         ToggleTheme={ToggleTheme}

@@ -2004,4 +2004,18 @@ updateValue: (state, action) => {
     },
   
 
-  
+
+
+
+var a = 1;
+
+
+
+function h() {
+  var a = 1;
+if(a)
+ var a  = 9 ;
+console.log(a);
+}
+
+h();
