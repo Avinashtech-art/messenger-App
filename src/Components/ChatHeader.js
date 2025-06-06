@@ -1,25 +1,36 @@
 import React from "react";
 import "../switch.css";
-import { useState } from "react";
+import "./chat.css";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { Form, Input } from "antd";
+import { updateValue, submitTheme, getOrginalTheme } from "../features/chat/themeSlice";
 import { authenticate } from "../features/chat/userSlice";
-import { ChatHead, LogoutBtn } from "./chatStyled";
-import { Button } from "antd";
-function ChatHeader({ toggleTheme, isDarkTheme }) {
+import { ChatHead, StyledButton } from "./chatStyled";
+import { Modal, Tabs, Alert, Button, Space } from "antd";
+import { ThemeMain, ThemeNameEnum } from "../themes";
+
+
+function ChatHeader({ ToggleTheme, isDarkTheme }) {
   const [isToggled, setIsToggled] = useState(isDarkTheme);
+
+  const [activeTab, setActiveTab] = useState("1");
+
+  const handleTabChange = (key) => {
+    setActiveTab(key);
+  };
 
   const onToggle = () => {
     setIsToggled(!isToggled);
-    toggleTheme();
+    ToggleTheme();
   };
 
-  const ToggleBox =styled.div`
+  const ToggleBox = styled.div`
   margin-inline-start: auto;
-  pad`
-   
+  pad`;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,34 +39,190 @@ function ChatHeader({ toggleTheme, isDarkTheme }) {
     localStorage.removeItem("user");
     navigate("/login");
   };
+  const [form] = Form.useForm();
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const themeValues = useSelector(getOrginalTheme);
 
+  const [updateThemeLocally, setThemeLocally] = useState({});
+
+  const { type, name, value } = updateThemeLocally;
+
+
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setConfirmLoading(false);
+
+      if (value) {
+        setOpen(false);
+      }
+
+      console.log("theeeee", themeValues);
+
+      dispatch(
+        updateValue({
+          type,
+          values: { [name]: value },
+        })
+      );
+    }, 1000);
+
+
+    console.log(submitTheme(), 'inside dispatch')
+
+    dispatch(submitTheme())
+
+  };
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const tempThemeValues = useSelector((state) => state.theme.tempThemeValues);
+
+  const handleFormSubmit = () => {
+    dispatch(updateValue(tempThemeValues));
+
+  };
+
+  const handleButtonClick = () => {
+
+    form.resetFields();
+  };
+
+  const updateTheme = (type, name, value) => {
+    dispatch(updateValue({}));
+
+    setThemeLocally({
+      type,
+      name,
+      value,
+    });
+
+
+  };
+
+  const formItem = ({ label, name, type }) => {
+    const themeType = activeTab === "1" ? ThemeMain.Light : ThemeMain.Dark;
+    return (
+      <Form.Item
+        label={label}
+        name={`${type}_${name}`} // 'light_primary'
+        rules={[
+          {
+            required: true,
+            message: "Please input your theme!",
+          },
+        ]}
+      >
+        <Input
+          value={tempThemeValues[themeType][name]}
+          initialvalues={tempThemeValues[themeType][name]}
+          onChange={(e) => updateTheme(type, name, e.target.value)}
+        />
+      </Form.Item>
+    );
+  };
+
+
+
+  const getConfig = () => {
+    return {
+      light: [
+        { label: "Primary", name: ThemeNameEnum.Primary },
+        { label: "Secondary", name: ThemeNameEnum.Secondary },
+        { label: "Fontcolor", name: ThemeNameEnum.FontColor },
+        { label: "Layouts", name: ThemeNameEnum.Layouts },
+      ],
+      dark: [
+        { label: "Dark Primary", name: ThemeNameEnum.Primary },
+        { label: "Secondary", name: ThemeNameEnum.Secondary },
+        { label: "Fontcolor", name: ThemeNameEnum.FontColor },
+        { label: "Layouts", name: ThemeNameEnum.Layouts },
+      ],
+    };
+  };
+
+  const formWrapper = (type) => {
+    return (
+      <Form
+        form={form}
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
+        style={{
+          maxWidth: 600,
+        }}
+        onFinish={handleFormSubmit}
+      >
+        {getConfig()[type].map((item, index) => {
+          return (
+            <div key={index}>
+              {formItem({ ...item, type })}
+            </div>
+          )
+        })}
+
+        <StyledButton onClick={handleButtonClick}>clear</StyledButton>
+      </Form>
+    );
+  };
 
   return (
     <ChatHead>
-    
-    
       <div className="chatHead">
         <h1>ChatApp</h1>
-        </div>
-        
-         
-        <ToggleBox>
+      </div>
+
+      <ToggleBox>
         <div className="togglebox">
           <label className="toggle-switch">
             <input type="checkbox" checked={isToggled} onChange={onToggle} />
             <span className="switch" />
           </label>
         </div>
+      </ToggleBox>
 
-        
-        </ToggleBox>
-        <div className="LogOutBtn" >
-        <Button  onClick={handleLogout}>Logout</Button>
-        </div>
-      
-   
+      <div className="LogOutBtn">
+        <StyledButton onClick={handleLogout}>Logout</StyledButton>
+      </div>
+
+      {/* Theme modal button */}
+
+      <div className="theme">
+        <StyledButton onClick={showModal}>Themes</StyledButton>
+        <Modal
+          open={open}
+          onOk={handleOk}
+          confirmLoading={confirmLoading}
+          onCancel={handleCancel}
+        >
+          <p>
+            <b>Theme</b>{" "}
+          </p>
+          <Tabs
+            defaultActiveKey="1"
+            activeKey={activeTab}
+            onChange={handleTabChange}
+          >
+            <Tabs.TabPane tab="Light Theme" key="1">
+              <h2>Light theme</h2>
+
+              {formWrapper(ThemeMain.Light)}
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Dark Theme" key="2">
+              <h2>Dark theme</h2>
+              {formWrapper(ThemeMain.Dark)}
+            </Tabs.TabPane>
+            <p></p>
+          </Tabs>
+        </Modal>
+      </div>
     </ChatHead>
-    
   );
 }
 

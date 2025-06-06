@@ -1,16 +1,9 @@
-
-
-
-
 import React from "react";
 // import { useState } from "react";
-// import ChatHeader from "./Header";
+import "./chat.css";
 import { SideBar } from "./chatStyled";
 function ChatSidebar() {
- 
-
   return (
-    
     <div className="sidebar">
       {/* {messages.map((message) => (
         <div
@@ -24,12 +17,9 @@ function ChatSidebar() {
         </div>
       ))}
    {/* <ChatHeader selectedMessage={selectedMessage} messages={messages} /> pass selectedMessage and messages as props     */}
-   <h1>SideBar</h1>
-  
+      <h1>SideBar</h1>
     </div>
- 
   );
 }
 
 export default ChatSidebar;
-
