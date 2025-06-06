@@ -6,11 +6,12 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Form, Input } from "antd";
-import { updateValue } from "../features/chat/themeSlice";
+import { updateValue, submitTheme, getOrginalTheme } from "../features/chat/themeSlice";
 import { authenticate } from "../features/chat/userSlice";
 import { ChatHead, StyledButton } from "./chatStyled";
 import { Modal, Tabs, Alert, Button, Space } from "antd";
 import { ThemeMain, ThemeNameEnum } from "../themes";
+
 
 function ChatHeader({ ToggleTheme, isDarkTheme }) {
   const [isToggled, setIsToggled] = useState(isDarkTheme);
@@ -41,10 +42,12 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
   const [form] = Form.useForm();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const themeValues = useSelector(getOrginalTheme);
 
   const [updateThemeLocally, setThemeLocally] = useState({});
 
   const { type, name, value } = updateThemeLocally;
+
 
   const showModal = () => {
     setOpen(true);
@@ -58,6 +61,8 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
         setOpen(false);
       }
 
+      console.log("theeeee", themeValues);
+
       dispatch(
         updateValue({
           type,
@@ -65,6 +70,12 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
         })
       );
     }, 1000);
+
+
+    console.log(submitTheme(), 'inside dispatch')
+
+    dispatch(submitTheme())
+
   };
   const handleCancel = () => {
     setOpen(false);
@@ -74,30 +85,32 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
 
   const handleFormSubmit = () => {
     dispatch(updateValue(tempThemeValues));
+
   };
 
   const handleButtonClick = () => {
-    setThemeLocally({});
-    console.log("tempThemeValues", form);
 
     form.resetFields();
   };
 
   const updateTheme = (type, name, value) => {
+    dispatch(updateValue({}));
+
     setThemeLocally({
       type,
       name,
       value,
     });
+
+
   };
-  console.log("autopop", tempThemeValues.dark.primary);
 
   const formItem = ({ label, name, type }) => {
     const themeType = activeTab === "1" ? ThemeMain.Light : ThemeMain.Dark;
     return (
       <Form.Item
         label={label}
-        name={name}
+        name={`${type}_${name}`} // 'light_primary'
         rules={[
           {
             required: true,
@@ -107,14 +120,14 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
       >
         <Input
           value={tempThemeValues[themeType][name]}
-          defaultValue={tempThemeValues[themeType][name]}
+          initialvalues={tempThemeValues[themeType][name]}
           onChange={(e) => updateTheme(type, name, e.target.value)}
         />
       </Form.Item>
     );
   };
 
-  
+
 
   const getConfig = () => {
     return {
@@ -146,8 +159,12 @@ function ChatHeader({ ToggleTheme, isDarkTheme }) {
         }}
         onFinish={handleFormSubmit}
       >
-        {getConfig()[type].map((item) => {
-          return formItem({ ...item, type });
+        {getConfig()[type].map((item, index) => {
+          return (
+            <div key={index}>
+              {formItem({ ...item, type })}
+            </div>
+          )
         })}
 
         <StyledButton onClick={handleButtonClick}>clear</StyledButton>

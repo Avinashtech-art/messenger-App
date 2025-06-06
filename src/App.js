@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import {
   getOrginalTheme,
   toggleTheme,
-  updateValue,
+  
 } from "./features/chat/themeSlice";
 
 import ChatHeader from "./Components/ChatHeader";

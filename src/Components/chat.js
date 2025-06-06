@@ -334,10 +334,10 @@ export function ChatUI() {
                 const userClass = isUser ? "user-right" : "user-left";
 
                 return (
-                  <div className={userClass}>
+                  <div  key={message.id}   className={userClass}>
                     <UserName isUser={isUser} className={userClass}>
                       <p>{message.sender}</p>
-                    </UserName>
+                    </UserName> 
 
                     <div key={message.id} className="message-container">
                       <UserMsg isUserSender={isUser} className={messageClass}>
@@ -379,11 +379,11 @@ export function ChatUI() {
                           variant=" "
                           title=":"
                           className="toggle"
-                          cssClass="e-caret-hide"
+                          cssclass="e-caret-hide"
                         >
                           {editingMessageId !== message.id && (
                             <Dropdown.Item
-                              cssClass="e-caret-hide"
+                              cssclass="e-caret-hide"
                               onClick={() =>
                                 handleEdit(message.id, message.content)
                               }

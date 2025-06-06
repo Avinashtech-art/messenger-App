@@ -2019,3 +2019,47 @@ console.log(a);
 }
 
 h();
+
+
+
+import React, { useState } from 'react';
+
+const MyComponent = () => {
+  const [lightThemeValues, setLightThemeValues] = useState({
+  });
+
+  const [darkThemeValues, setDarkThemeValues] = useState({
+   
+  });
+
+  const updateLightTheme = (name, value) => {
+    setLightThemeValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const updateDarkTheme = (name, value) => {
+    setDarkThemeValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  // ... other code ...
+
+  return (
+    <>
+      {/ Your code that renders the activeTab, formItem, and other components /}
+    </>
+  );
+};
+
+export default MyComponent;
+
+
+
+
+
+
+

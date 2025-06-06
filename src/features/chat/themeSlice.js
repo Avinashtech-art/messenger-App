@@ -24,13 +24,20 @@ const themeSlice = createSlice({
      * myObj.light = {...myObj.light, ...{"secondary":"grey"}}
      */
     updateValue: (state, action) => {
+   
       state.tempThemeValues[action.payload.type] = {
         ...state.tempThemeValues[action.payload.type],
         ...action.payload.values,
-      };
-      state.orginalTheme = {
-        ...state.tempThemeValues,
-      };
+      }
+   
+    },
+
+    submitTheme: (state,action) => {
+    
+      state.orginalTheme[action.payload] =  {...state.tempThemeValues[action.payload]}
+      
+      console.log(state.tempThemeValues,'inside state')
+
     },
   },
 });
